@@ -1,0 +1,20 @@
+---
+- name: Wordpress download and unpacking
+  unarchive:
+    src: https://wordpress.org/latest.tar.gz
+    dest: "/var/www"
+    remote_src: yes
+
+- name: Copy wordpress files to /html folder
+  command: cp /var/www/wordpress/. /var/www/html -r
+
+- name: Set permissions for directories
+  command: "/usr/bin/find /var/www/html/ -type d -exec chmod 2775 {} \\;"
+
+- name: Set permissions for files
+  command: "/usr/bin/find /var/www/html/ -type f -exec chmod 0664 {} \\;"
+  
+- name: Recursively remove directory
+  ansible.builtin.file:
+    path: /var/www/wordpress
+    state: absent

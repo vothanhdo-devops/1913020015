@@ -1,0 +1,7 @@
+---
+- name: Mount efs with /var/www/html
+  command: "sudo mount -t nfs -o nfsvers=4.1,rsize=1048576,wsize=1048576,hard,timeo=600,retrans=2,noresvport ${aws_efs_dns}:/  /var/www/html"
+- name: add efs to fstab
+  command: "echo ${aws_efs_dns}:/ /var/www/html nfs4 defaults,_netdev 0 0  | sudo cat >> /etc/fstab "
+- name: set permissions
+  command: "sudo chmod go+rw /var/www/html"

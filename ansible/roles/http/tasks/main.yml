@@ -1,0 +1,13 @@
+---
+- name: Update server
+  ansible.builtin.yum:
+    name: '*'
+    state: latest
+
+- name: Install httpd
+  ansible.builtin.yum:
+    name: httpd
+    state: present
+  notify: 
+    - restart httpd service
+    - Enabling httpd service and start the service
