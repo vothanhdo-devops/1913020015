@@ -248,7 +248,6 @@ resource "null_resource" "Wordpress_config_1" {
   provisioner "local-exec" {
     command = "ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook -u ec2-user -i '${element(aws_eip.eip.*.public_ip, count.index)},' --private-key ${var.PRIV_KEY_PATH}  '../ansible/playbook-2.yml'"
   }
-  depends_on = [aws_db_instance.wordpressdb, aws_efs_file_system.efs]
 }
 resource "time_sleep" "wait_60_seconds" {
   depends_on = [null_resource.Wordpress_config_1]
@@ -260,7 +259,7 @@ resource "null_resource" "Wordpress_config_2" {
     type        = "ssh"
     user        = "ec2-user"
     private_key = file(var.PRIV_KEY_PATH)
-    host        = aws_eip.eip[0].public_ip
+    host        = aws_eip.eip.public_ip
   }
   provisioner "local-exec" {
     command = "ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook -u ec2-user -i '${aws_eip.eip[0].public_ip},' --private-key ${var.PRIV_KEY_PATH}  '../ansible/playbook-3.yml'"
