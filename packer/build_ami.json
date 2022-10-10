@@ -1,0 +1,28 @@
+{
+    "builders": [{
+        "type": "amazon-ebs",
+        "access_key": "{{user `aws_access_key`}}",
+        "secret_key": "{{user `aws_secret_key`}}",
+        "region": "{{user `region`}}",
+        "source_ami": "{{user `ami`}}",
+        "instance_type": "{{user `instance_type`}}",
+        "ssh_username": "{{user `ssh_username`}}",
+        "ami_name": "{{user `ami_name`}}"
+    }],
+    "provisioners": [{
+        "type": "shell",
+        "inline": [
+            "sudo yum install -y python2",
+            "sudo amazon-linux-extras install ansible2"
+        ]
+    },{
+        "type": "ansible-local",
+        "playbook_file": "../ansible/playbook-1.yml",
+        "role_paths": [
+            "../ansible/roles/http",
+            "../ansible/roles/php",
+            "../ansible/roles/wordpress"
+          ]
+    }
+    ]
+}

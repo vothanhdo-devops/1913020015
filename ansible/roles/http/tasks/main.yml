@@ -1,0 +1,14 @@
+---
+- name: Update server
+  ansible.builtin.yum:
+    name: '*'
+    state: latest
+- name: Install httpd
+  ansible.builtin.yum:
+    name: httpd
+    state: present
+- name: set permissions (changing ownership)
+  command: "chown -R ec2-user:apache /var/www/html"
+  notify: 
+    - restart httpd service
+    - Enabling httpd service and start the service

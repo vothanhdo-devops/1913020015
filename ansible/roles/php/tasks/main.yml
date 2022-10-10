@@ -1,0 +1,14 @@
+---
+- name: Update server
+  ansible.builtin.yum:
+    name: '*'
+    state: latest
+- name: Installing PHP
+  shell: amazon-linux-extras enable php7.4
+- name: Clean metadata
+  ansible.builtin.yum: 
+    name: metadata 
+    state: removed
+- name: Install php extensions
+  ansible.builtin.yum: name={{ item }} state=present
+  loop: [  'php-fpm','php-mysqlnd', 'php-curl', 'php-gd', 'php-mbstring', 'php-xml', 'php-xmlrpc', 'php-soap', 'php-intl', 'php-zip' ]

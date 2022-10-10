@@ -1,0 +1,17 @@
+---
+- name: Setting up variables
+  set_fact:
+    mysql_rds: ${db_RDS}  
+    mysql_db: ${db_name}
+    mysql_user: ${db_username}
+    mysql_password: ${db_user_password}
+    my_domain: ${my_domain}
+- name: Copy wp-config to host webserver
+  ansible.builtin.template:
+    src: "wp-config.php.j2"
+    dest: "/var/www/html/wp-config.php"
+- name: set permissions (changing ownership)
+  command: "chown -R ec2-user:apache /var/www/html"
+  notify: 
+    - restart httpd service
+    - Enabling httpd service and start the service
